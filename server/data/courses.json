@@ -1,0 +1,82 @@
+[
+  {
+    "id": "course-ceramica",
+    "title": "Ceramica e tornio",
+    "description": "Impari a lavorare l'argilla al tornio e a mano, a decorare e smaltare i pezzi e a gestire la cottura nel forno, nella bottega di un maestro ceramista del borgo.",
+    "skills": ["tornio", "modellazione", "decorazione", "smaltatura", "cottura"],
+    "duration": "6 mesi, 15 ore a settimana",
+    "remote": false
+  },
+  {
+    "id": "course-falegnameria",
+    "title": "Falegnameria e restauro del mobile",
+    "description": "Impari a scegliere e lavorare il legno con attrezzi manuali ed elettrici, a costruire piccoli mobili e a restaurare quelli antichi recuperati nelle case del paese.",
+    "skills": ["lavorazione del legno", "uso degli attrezzi", "restauro", "verniciatura"],
+    "duration": "8 mesi, 20 ore a settimana",
+    "remote": false
+  },
+  {
+    "id": "course-sartoria",
+    "title": "Sartoria artigianale",
+    "description": "Impari a prendere le misure, disegnare cartamodelli, tagliare e cucire a mano e a macchina, fino a realizzare un capo completo su misura.",
+    "skills": ["cucito a mano", "macchina da cucire", "cartamodelli", "taglio", "riparazioni"],
+    "duration": "6 mesi, 12 ore a settimana",
+    "remote": false
+  },
+  {
+    "id": "course-tessitura",
+    "title": "Tessitura al telaio",
+    "description": "Impari a preparare l'ordito e a tessere al telaio a mano tappeti, coperte e tessuti secondo i disegni della tradizione locale.",
+    "skills": ["telaio a mano", "preparazione dell'ordito", "tintura naturale", "disegni tradizionali"],
+    "duration": "4 mesi, 10 ore a settimana",
+    "remote": false
+  },
+  {
+    "id": "course-ferro-battuto",
+    "title": "Ferro battuto",
+    "description": "Impari a scaldare e forgiare il ferro all'incudine per realizzare cancelli, ringhiere e oggetti decorativi, lavorando in sicurezza in una forgia tradizionale.",
+    "skills": ["forgiatura", "saldatura", "sicurezza in officina", "lettura del disegno"],
+    "duration": "8 mesi, 20 ore a settimana",
+    "remote": false
+  },
+  {
+    "id": "course-pane-pasta",
+    "title": "Panificazione e pasta fresca",
+    "description": "Impari a gestire il lievito madre, a impastare e cuocere il pane nel forno a legna e a preparare a mano i formati di pasta fresca tipici del territorio.",
+    "skills": ["lievito madre", "impasto", "forno a legna", "pasta fresca", "igiene alimentare"],
+    "duration": "3 mesi, 15 ore a settimana",
+    "remote": false
+  },
+  {
+    "id": "course-cesteria",
+    "title": "Cesteria e intreccio",
+    "description": "Impari a raccogliere e preparare vimini e canne e a intrecciarli per realizzare cesti, sedute e oggetti d'uso quotidiano. Un corso breve, adatto a chi parte da zero.",
+    "skills": ["intreccio", "preparazione delle fibre", "manualità di base"],
+    "duration": "2 mesi, 6 ore a settimana",
+    "remote": false
+  },
+  {
+    "id": "course-disegno-artigiani",
+    "title": "Disegno e progettazione per artigiani",
+    "description": "Impari a disegnare a mano e al computer i progetti dei tuoi lavori, a leggere un disegno tecnico e a preparare un preventivo per il cliente. Lezioni online con esercitazioni da casa.",
+    "skills": ["disegno a mano", "disegno tecnico", "progettazione", "preventivi"],
+    "duration": "2 mesi, 5 ore a settimana",
+    "remote": true
+  },
+  {
+    "id": "course-bottega-online",
+    "title": "Aprire e far conoscere una bottega",
+    "description": "Impari le basi per avviare un'attività artigiana: permessi, prezzi, gestione dei conti e vendita online dei tuoi prodotti con un piccolo negozio e i social. Lezioni online.",
+    "skills": ["gestione di impresa", "calcolo dei prezzi", "vendita online", "social media"],
+    "duration": "3 mesi, 4 ore a settimana",
+    "remote": true
+  },
+  {
+    "id": "course-italiano-lavoro",
+    "title": "Italiano per il lavoro in bottega",
+    "description": "Impari l'italiano che serve in bottega e con i clienti: nomi di attrezzi e materiali, norme di sicurezza, come presentare il tuo lavoro durante i workshop per turisti. Lezioni online.",
+    "skills": ["lingua italiana", "comunicazione con i clienti", "lessico tecnico", "sicurezza sul lavoro"],
+    "duration": "3 mesi, 6 ore a settimana",
+    "remote": true
+  }
+]
