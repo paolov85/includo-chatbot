@@ -1,0 +1,17 @@
+{
+  "name": "includo-chatbot-server",
+  "version": "1.0.0",
+  "description": "Back end del chatbot di orientamento ai corsi IncluDO",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "author": "Paolo Vicaro",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^18.0.4",
+    "express": "^5.2.1"
+  }
+}
