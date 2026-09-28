@@ -5,7 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "node --watch src/server.js"
+    "dev": "node --watch src/server.js",
+    "create-index": "node scripts/createIndex.js"
   },
   "author": "Paolo Vicaro",
   "license": "ISC",

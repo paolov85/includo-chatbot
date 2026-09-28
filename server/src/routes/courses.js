@@ -1,6 +1,7 @@
 const express = require('express')
 const { db } = require('../db')
 const { createEmbedding } = require('../openai')
+const { searchCourses } = require('../search')
 
 const router = express.Router()
 
@@ -63,6 +64,26 @@ router.post('/ingest', async (req, res) => {
   }
 
   res.json({ message: 'Corsi salvati', count: courses.length })
+})
+
+// GET /api/courses/search?q=...&remote=true
+// Serve a provare la ricerca da sola, senza passare dal chatbot
+router.get('/search', async (req, res) => {
+  const query = req.query.q
+  if (!query) {
+    return res.status(400).json({ error: 'Manca il parametro q' })
+  }
+
+  // Dalla query string arriva sempre una stringa: la converto in booleano
+  let remote
+  if (req.query.remote === 'true') {
+    remote = true
+  } else if (req.query.remote === 'false') {
+    remote = false
+  }
+
+  const results = await searchCourses(query, remote)
+  res.json(results)
 })
 
 module.exports = router
