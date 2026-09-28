@@ -12,6 +12,8 @@
   "type": "commonjs",
   "dependencies": {
     "dotenv": "^18.0.4",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mongodb": "^7.6.0",
+    "openai": "^7.23.0"
   }
 }

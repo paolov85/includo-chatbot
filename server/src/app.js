@@ -1,4 +1,5 @@
 const express = require('express')
+const coursesRoutes = require('./routes/courses')
 
 const app = express()
 
@@ -10,6 +11,8 @@ app.use(express.json())
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' })
 })
+
+app.use('/api/courses', coursesRoutes)
 
 // Nessuna delle rotte qui sopra ha risposto: l'indirizzo non esiste
 app.use((req, res) => {
