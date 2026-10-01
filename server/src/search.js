@@ -1,6 +1,13 @@
 const { db } = require('./db')
 const { createEmbedding } = require('./openai')
 
+// Punteggio minimo di somiglianza per considerare un corso pertinente.
+// $vectorSearch restituisce sempre i corsi "meno lontani", anche per richieste
+// che non c'entrano nulla con il catalogo. Valore scelto misurando i punteggi:
+// le richieste pertinenti danno 0.75-0.83 sul primo corso, quelle fuori
+// catalogo (droni, infermiere, programmazione) restano sotto 0.71
+const MIN_SCORE = 0.72
+
 // La RAG: riceve una descrizione di cosa cerca l'utente, la trasforma in
 // embedding e chiede a MongoDB i corsi con il vettore più vicino.
 // remote può essere true, false oppure undefined (l'utente non ha preferenze)
@@ -35,7 +42,16 @@ async function searchCourses(query, remote) {
     }
   ]).toArray()
 
-  return results
+  // Tengo solo i corsi abbastanza simili alla richiesta.
+  // Può succedere che non ne resti nessuno: è un esito valido
+  const relevant = []
+  for (let i = 0; i < results.length; i++) {
+    if (results[i].score >= MIN_SCORE) {
+      relevant.push(results[i])
+    }
+  }
+
+  return relevant
 }
 
 module.exports = { searchCourses }

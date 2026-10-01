@@ -6,6 +6,9 @@ const { searchCourses } = require('../search')
 
 const router = express.Router()
 
+// Messaggio per l'utente quando OpenAI non risponde
+const AI_ERROR_MESSAGE = 'Il servizio di intelligenza artificiale non è disponibile in questo momento. Riprova tra qualche minuto.'
+
 // POST /api/chat
 // Riceve la conversazione fino a qui: { messages: [{ role, content }, ...] }
 // e risponde con il messaggio successivo del chatbot.
@@ -39,11 +42,19 @@ router.post('/', async (req, res) => {
   // Prima chiamata: passo al modello anche il tool. Sarà lui a decidere
   // se rispondere normalmente (per fare un'altra domanda) oppure se
   // chiedere di eseguire searchCourses
-  const completion = await openai.chat.completions.create({
-    model: CHAT_MODEL,
-    messages: fullConversation,
-    tools: [searchCoursesTool]
-  })
+  let completion
+  try {
+    completion = await openai.chat.completions.create({
+      model: CHAT_MODEL,
+      messages: fullConversation,
+      tools: [searchCoursesTool]
+    })
+  } catch (errore) {
+    // OpenAI non risponde (chiave sbagliata, credito finito, servizio giù):
+    // lo dico chiaramente invece di restituire un errore generico
+    console.log('Errore nella chiamata a OpenAI: ' + errore.message)
+    return res.status(503).json({ error: AI_ERROR_MESSAGE })
+  }
 
   const answer = completion.choices[0].message
 
@@ -60,39 +71,57 @@ router.post('/', async (req, res) => {
     const toolCall = answer.tool_calls[i]
 
     if (toolCall.function.name === 'searchCourses') {
-      // Gli argomenti arrivano come stringa JSON
-      const args = JSON.parse(toolCall.function.arguments)
       console.log('Il modello chiama searchCourses con: ' + toolCall.function.arguments)
 
-      const results = await searchCourses(args.query, args.remote)
+      // Il risultato del tool è sempre un testo JSON. Se qualcosa va storto
+      // (argomenti non validi, database o OpenAI irraggiungibili) al modello
+      // mando un errore esplicito: il prompt gli dice di avvisare l'utente
+      // invece di inventare un consiglio
+      let toolResult
+      try {
+        // Gli argomenti arrivano come stringa JSON, scritta dal modello
+        const args = JSON.parse(toolCall.function.arguments)
+        const results = await searchCourses(args.query, args.remote)
 
-      // Al modello passo solo i dati che gli servono per consigliare
-      const courses = []
-      for (let j = 0; j < results.length; j++) {
-        courses.push({
-          id: results[j]._id,
-          title: results[j].metadata.title,
-          description: results[j].metadata.description,
-          duration: results[j].metadata.duration,
-          remote: results[j].metadata.remote,
-          skills: results[j].metadata.skills
-        })
+        // Al modello passo solo i dati che gli servono per consigliare
+        const courses = []
+        for (let j = 0; j < results.length; j++) {
+          courses.push({
+            id: results[j]._id,
+            title: results[j].metadata.title,
+            description: results[j].metadata.description,
+            duration: results[j].metadata.duration,
+            remote: results[j].metadata.remote,
+            skills: results[j].metadata.skills
+          })
+        }
+        console.log('Corsi trovati: ' + courses.length)
+        toolResult = JSON.stringify(courses)
+      } catch (errore) {
+        console.log('Errore durante searchCourses: ' + errore.message)
+        toolResult = JSON.stringify({ error: 'La ricerca dei corsi non è riuscita' })
       }
 
       fullConversation.push({
         role: 'tool',
         tool_call_id: toolCall.id,
-        content: JSON.stringify(courses)
+        content: toolResult
       })
     }
   }
 
   // Seconda chiamata: il modello legge i corsi trovati e scrive il consiglio.
   // Qui non passo il tool, così è obbligato a rispondere con un testo
-  const finalCompletion = await openai.chat.completions.create({
-    model: CHAT_MODEL,
-    messages: fullConversation
-  })
+  let finalCompletion
+  try {
+    finalCompletion = await openai.chat.completions.create({
+      model: CHAT_MODEL,
+      messages: fullConversation
+    })
+  } catch (errore) {
+    console.log('Errore nella chiamata a OpenAI: ' + errore.message)
+    return res.status(503).json({ error: AI_ERROR_MESSAGE })
+  }
 
   res.json({ reply: finalCompletion.choices[0].message.content })
 })
