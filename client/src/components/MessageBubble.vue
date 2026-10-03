@@ -5,7 +5,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="bubble" :class="message.role === 'user' ? 'bubble-user' : 'bubble-assistant'">
+  <div class="bubble" :class="'bubble-' + message.role">
     <p class="bubble-text">{{ message.content }}</p>
   </div>
 </template>
@@ -21,6 +21,12 @@ defineProps({
 .bubble-assistant {
   background-color: #ffffff;
   border: 1px solid #e7e5e4;
+}
+
+.bubble-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
 }
 
 .bubble-user {

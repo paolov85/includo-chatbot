@@ -1,9 +1,14 @@
 const express = require('express')
+const cors = require('cors')
 const coursesRoutes = require('./routes/courses')
 const chatRoutes = require('./routes/chat')
 const conversationsRoutes = require('./routes/conversations')
 
 const app = express()
+
+// Il front end gira su un altro indirizzo (un'altra porta in locale,
+// un altro dominio online): senza CORS il browser bloccherebbe le sue richieste
+app.use(cors())
 
 // Serve a leggere il corpo JSON delle richieste POST
 app.use(express.json())
