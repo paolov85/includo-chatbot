@@ -7,8 +7,14 @@ const conversationsRoutes = require('./routes/conversations')
 const app = express()
 
 // Il front end gira su un altro indirizzo (un'altra porta in locale,
-// un altro dominio online): senza CORS il browser bloccherebbe le sue richieste
-app.use(cors())
+// un altro dominio online): senza CORS il browser bloccherebbe le sue richieste.
+// Online accetto richieste solo dal sito su Netlify (CLIENT_URL);
+// in locale la variabile non c'è e accetto tutto
+if (process.env.CLIENT_URL) {
+  app.use(cors({ origin: process.env.CLIENT_URL }))
+} else {
+  app.use(cors())
+}
 
 // Serve a leggere il corpo JSON delle richieste POST
 app.use(express.json())

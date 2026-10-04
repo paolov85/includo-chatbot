@@ -25,6 +25,14 @@ function courseToText(course) {
 // Riceve l'array dei corsi (il file data/courses.json), crea l'embedding di
 // ognuno e lo salva nel database insieme ai dati del corso
 router.post('/ingest', async (req, res) => {
+  // È l'unico endpoint che scrive sul catalogo e ogni chiamata consuma
+  // credito OpenAI: online lo proteggo con una chiave segreta (ADMIN_KEY),
+  // che va mandata nell'header x-admin-key. In locale la variabile
+  // non c'è e l'endpoint resta libero
+  if (process.env.ADMIN_KEY && req.get('x-admin-key') !== process.env.ADMIN_KEY) {
+    return res.status(401).json({ error: 'Chiave di amministrazione mancante o non valida' })
+  }
+
   const courses = req.body
 
   if (!Array.isArray(courses) || courses.length === 0) {
