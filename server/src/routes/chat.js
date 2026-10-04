@@ -34,8 +34,8 @@ router.post('/', async (req, res) => {
     let conversation
     try {
       conversation = await conversations.findOne({ _id: sessionId })
-    } catch (errore) {
-      console.log('Errore nella lettura della conversazione: ' + errore.message)
+    } catch (error) {
+      console.log('Errore nella lettura della conversazione: ' + error.message)
       return res.status(503).json({ error: DB_ERROR_MESSAGE })
     }
 
@@ -67,10 +67,10 @@ router.post('/', async (req, res) => {
       messages: fullConversation,
       tools: [searchCoursesTool]
     })
-  } catch (errore) {
+  } catch (error) {
     // OpenAI non risponde (chiave sbagliata, credito finito, servizio giù):
     // lo dico chiaramente invece di restituire un errore generico
-    console.log('Errore nella chiamata a OpenAI: ' + errore.message)
+    console.log('Errore nella chiamata a OpenAI: ' + error.message)
     return res.status(503).json({ error: AI_ERROR_MESSAGE })
   }
 
@@ -115,8 +115,8 @@ router.post('/', async (req, res) => {
           }
           console.log('Corsi trovati: ' + courses.length)
           toolResult = JSON.stringify(courses)
-        } catch (errore) {
-          console.log('Errore durante searchCourses: ' + errore.message)
+        } catch (error) {
+          console.log('Errore durante searchCourses: ' + error.message)
           toolResult = JSON.stringify({ error: 'La ricerca dei corsi non è riuscita' })
         }
 
@@ -136,8 +136,8 @@ router.post('/', async (req, res) => {
         model: CHAT_MODEL,
         messages: fullConversation
       })
-    } catch (errore) {
-      console.log('Errore nella chiamata a OpenAI: ' + errore.message)
+    } catch (error) {
+      console.log('Errore nella chiamata a OpenAI: ' + error.message)
       return res.status(503).json({ error: AI_ERROR_MESSAGE })
     }
     reply = finalCompletion.choices[0].message.content
@@ -166,8 +166,8 @@ router.post('/', async (req, res) => {
       // upsert: se la conversazione non esiste ancora, la crea
       { upsert: true }
     )
-  } catch (errore) {
-    console.log('Errore nel salvataggio della conversazione: ' + errore.message)
+  } catch (error) {
+    console.log('Errore nel salvataggio della conversazione: ' + error.message)
     return res.status(503).json({ error: DB_ERROR_MESSAGE })
   }
 

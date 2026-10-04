@@ -35,8 +35,8 @@ async function createIndex() {
 }
 
 createIndex()
-  .catch((errore) => {
-    console.log('Errore nella creazione dell\'indice: ' + errore.message)
+  .catch((error) => {
+    console.log('Errore nella creazione dell\'indice: ' + error.message)
   })
   .finally(() => {
     client.close()

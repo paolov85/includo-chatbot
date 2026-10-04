@@ -13,8 +13,8 @@ db.command({ ping: 1 })
   .then(() => {
     console.log('Connessione a MongoDB riuscita')
   })
-  .catch((errore) => {
-    console.log('Errore di connessione a MongoDB: ' + errore.message)
+  .catch((error) => {
+    console.log('Errore di connessione a MongoDB: ' + error.message)
   })
 
 app.listen(port, () => {

@@ -35,12 +35,12 @@ app.use((req, res) => {
 })
 
 // Gestore centralizzato degli errori (si riconosce dai quattro parametri)
-app.use((errore, req, res, next) => {
-  if (errore.type === 'entity.parse.failed') {
+app.use((error, req, res, next) => {
+  if (error.type === 'entity.parse.failed') {
     return res.status(400).json({ error: 'Il corpo della richiesta non è JSON valido' })
   }
 
-  console.log('Errore non previsto: ' + errore.message)
+  console.log('Errore non previsto: ' + error.message)
   res.status(500).json({ error: 'Errore interno del server' })
 })
 
