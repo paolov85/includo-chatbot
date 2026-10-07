@@ -28,4 +28,21 @@ const searchCoursesTool = {
   }
 }
 
-module.exports = { searchCoursesTool }
+// Controlla gli argomenti che il modello ha scritto per searchCourses.
+// Il modello di solito rispetta la descrizione del tool, ma non è garantito:
+// prima di eseguire qualcosa verifico i tipi, come per qualsiasi dato che
+// arriva dall'esterno. Restituisce un messaggio di errore, oppure null se va tutto bene
+function validateSearchArgs(args) {
+  if (typeof args.query !== 'string' || args.query.trim() === '') {
+    return 'Il parametro query deve essere un testo non vuoto'
+  }
+
+  // remote è facoltativo: se c'è, deve essere true o false
+  if (args.remote !== undefined && typeof args.remote !== 'boolean') {
+    return 'Il parametro remote deve essere true o false'
+  }
+
+  return null
+}
+
+module.exports = { searchCoursesTool, validateSearchArgs }

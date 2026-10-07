@@ -3,7 +3,7 @@ const crypto = require('crypto')
 const { db } = require('../db')
 const { openai, CHAT_MODEL } = require('../openai')
 const { SYSTEM_PROMPT } = require('../prompt')
-const { searchCoursesTool } = require('../tools')
+const { searchCoursesTool, validateSearchArgs } = require('../tools')
 const { searchCourses } = require('../search')
 
 const router = express.Router()
@@ -99,6 +99,12 @@ router.post('/', async (req, res) => {
         try {
           // Gli argomenti arrivano come stringa JSON, scritta dal modello
           const args = JSON.parse(toolCall.function.arguments)
+
+          const validationError = validateSearchArgs(args)
+          if (validationError) {
+            throw new Error(validationError)
+          }
+
           const results = await searchCourses(args.query, args.remote)
 
           // Al modello passo solo i dati che gli servono per consigliare
